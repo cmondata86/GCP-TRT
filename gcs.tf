@@ -4,7 +4,7 @@
     }
 
     resource "google_storage_bucket" "static" {
- name          = "BUCKET_NAME"
+ name          = "TRT-BUCKET1"
  location      = "US"
  storage_class = "STANDARD"
 
