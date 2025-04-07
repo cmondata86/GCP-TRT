@@ -91,10 +91,4 @@ resource "google_alloydb_instance" "alloy_instance" {
   }
 }
 
-resource "google_alloydb_user" "alloy_user" {
-  cluster   = google_alloydb_cluster.alloy_cluster.id
-  user_id   = "postgres"
-  password  = "postgres123" # Replace with a secure password
-  user_type = "ALLOYDB_BUILT_IN"
-  depends_on = [google_alloydb_instance.alloy_instance]
-}
+
