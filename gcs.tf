@@ -63,7 +63,7 @@ resource "google_alloydb_cluster" "alloy_cluster" {
 resource "google_alloydb_instance" "alloy_instance" {
   instance_id   = "trt-alloy-instance"
   cluster       = google_alloydb_cluster.alloy_cluster.id
-  location        = "us-east1"
+  #location        = "us-east1"
   instance_type = "PRIMARY"
 
   machine_config {
