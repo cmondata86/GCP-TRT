@@ -9,9 +9,9 @@ resource "google_storage_bucket" "bucket1" {
 
 resource "google_alloydb_cluster" "trt_alloy_cluster" {
   cluster_id   = "trt_alloy_cluster"
-  region       = "us-east1"
+  #region       = "us-east1"
   location     = "us-east1-a"
-  network      = "default"
+  #network      = "default"
 
   initial_user {
     username = "postgres"
