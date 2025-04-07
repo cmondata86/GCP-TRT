@@ -120,5 +120,24 @@ resource "google_service_networking_connection" "private_vpc_connection" {
 }
 
 
+resource "google_alloydb_instance" "alloy_instance" {
+  instance_id   = "trt-alloy-instance"
+  cluster       = google_alloydb_cluster.alloy_cluster.id
+  #location        = "us-east1"
+  instance_type = "PRIMARY"
+
+  machine_config {
+    cpu_count = 2
+  }
+}
+
+
+resource "google_alloydb_user" "alloy_user" {
+  cluster   = google_alloydb_cluster.alloy_cluster.id
+  user_id   = "postgres"
+  password  = "postgres123" # Replace with a secure password
+  user_type = "ALLOYDB_BUILT_IN"
+  depends_on = [google_alloydb_instance.alloy_instance]
+}
 
 
