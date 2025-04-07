@@ -17,6 +17,12 @@ resource "google_project_service" "alloydb_api" {
   service = "alloydb.googleapis.com"
 }
 
+resource "google_project_service" "cloudresourcemanager_api" {
+  project = "gcp-trt-training" # Replace with your project ID
+  service = "cloudresourcemanager.googleapis.com"
+}
+
+
 resource "google_alloydb_cluster" "trt_alloy_cluster" {
   cluster_id   = "trt_alloy_cluster"
   #region       = "us-east1"
