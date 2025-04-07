@@ -60,6 +60,12 @@ resource "google_alloydb_cluster" "alloy_cluster" {
   }
 }
 
+resource "google_project_service" "service_networking_api" {
+  project = "gcp-trt-training" # Replace with your project ID
+  service = "servicenetworking.googleapis.com"
+  depends_on = [google_project_service.cloudresourcemanager_api]
+}
+
 resource "google_alloydb_instance" "alloy_instance" {
   instance_id   = "trt-alloy-instance"
   cluster       = google_alloydb_cluster.alloy_cluster.id
@@ -76,4 +82,5 @@ resource "google_alloydb_user" "alloy_user" {
   user_id   = "postgres"
   password  = "postgres123" # Replace with a secure password
   user_type = "ALLOYDB_BUILT_IN"
+  depends_on = [google_alloydb_instance.alloy_instance]
 }
