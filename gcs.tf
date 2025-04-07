@@ -51,12 +51,6 @@ resource "google_project_iam_binding" "compute_network_admin" {
   ]
 }
 
-resource "google_project_iam_member" "servicenetworking_admin" {
-  project = "gcp-trt-training" # Replace with your project ID
-  role    = "roles/servicenetworking.networksAdmin"
-  member  = "user:trtjobs.mondal@gmail.com" # Replace with the user, service account, or group
-}
-
 resource "google_compute_network" "private_network" {
   name = "trt-private-network"
 }
