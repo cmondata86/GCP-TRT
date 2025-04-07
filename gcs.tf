@@ -66,9 +66,5 @@ resource "google_project_service" "service_networking_api" {
   depends_on = [google_project_service.cloudresourcemanager_api]
 }
 
-resource "google_service_networking_connection" "private_vpc_connection" {
-  network                 = google_compute_network.private_network.id
-  service                 = "servicenetworking.googleapis.com"
-  reserved_peering_ranges = [google_compute_global_address.private_ip_range.name]
-}
+
 
