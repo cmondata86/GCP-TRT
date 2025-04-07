@@ -11,3 +11,9 @@ resource "google_project_service" "cloudresourcemanager_api" {
   project = "gcp-trt-training" # Replace with your project ID
   service = "cloudresourcemanager.googleapis.com"
 }
+
+resource "google_project_service" "alloydb_api" {
+  project = "gcp-trt-training" # Replace with your project ID
+  service = "alloydb.googleapis.com"
+  depends_on = [google_project_service.cloudresourcemanager_api]
+}
