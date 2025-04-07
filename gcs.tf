@@ -25,11 +25,11 @@ resource "google_project_service" "psc_api" {
 }
 
 resource "google_compute_network" "private_network" {
-  name = "trt_private-network"
+  name = "trt-private-network"
 }
 
 resource "google_compute_subnetwork" "private_subnetwork" {
-  name          = "trt_private-subnetwork"
+  name          = "trt-private-subnetwork"
   ip_cidr_range = "10.0.0.0/24"
   region        = "us-east1"
   network       = google_compute_network.private_network.id
