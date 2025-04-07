@@ -93,6 +93,31 @@ resource "google_service_networking_connection" "private_vpc_connection" {
   reserved_peering_ranges = [google_compute_global_address.private_ip_range.name]
 }
 
+  resource "google_alloydb_cluster" "alloy_cluster" {
+  cluster_id = "trt-alloy-cluster"
+  location   = "us-east1"
+ # network    = google_compute_network.private_network.id
+
+  network_config {
+    network = google_compute_network.private_network.id
+  }
+
+  continuous_backup_config {
+    enabled = true
+  }
+
+  automated_backup_policy {
+    enabled = true
+    weekly_schedule {
+      days_of_week = ["MONDAY", "WEDNESDAY", "FRIDAY"]
+      start_times {
+        hours   = 2
+        minutes = 0
+      }
+    }
+  }
+    depends_on = [google_service_networking_connection.private_vpc_connection]
+}
 
 
 
