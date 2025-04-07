@@ -7,6 +7,11 @@ resource "google_storage_bucket" "bucket1" {
  location      = "us-east1"
 }
 
+resource "google_project_service" "alloydb_api" {
+  project = "gcp-trt-training" # Replace with your project ID
+  service = "alloydb.googleapis.com"
+}
+
 resource "google_alloydb_cluster" "trt_alloy_cluster" {
   cluster_id   = "trt_alloy_cluster"
   #region       = "us-east1"
