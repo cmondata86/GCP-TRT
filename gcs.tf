@@ -82,4 +82,5 @@ resource "google_alloydb_user" "alloy_user" {
   user_id   = "postgres"
   password  = "postgres123" # Replace with a secure password
   user_type = "ALLOYDB_BUILT_IN"
+  depends_on = [google_alloydb_instance.alloy_instance]
 }
