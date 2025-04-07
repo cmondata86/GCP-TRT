@@ -51,7 +51,7 @@ resource "google_alloydb_cluster" "alloy_cluster" {
   automated_backup_policy {
     enabled = true
     weekly_schedule {
-      days_of_week = ["MON", "WED", "FRI"]
+      days_of_week = ["MONDAY", "WEDNESDAY", "FRIDAY"]
       start_times {
         hours   = 2
         minutes = 0
