@@ -30,25 +30,41 @@ resource "google_project_service" "service_networking_api" {
   depends_on = [google_project_service.cloudresourcemanager_api]
 }
 
-resource "google_project_iam_member" "servicenetworking_admin" {
-  project = "gcp-trt-training" # Replace with your project ID
+
+resource "google_project_iam_member" "servicenetworking_admin_user1" {
+  project = "gcp-trt-training"
   role    = "roles/servicenetworking.networksAdmin"
-  members = [
-    "user:trtjobs.mondal@gmail.com",          # Replace with the first user
-    "serviceAccount:292380354815-compute@developer.gserviceaccount.com",          # Replace with the second user
-    "serviceAccount:gcp-trt-training@gcp-trt-training.iam.gserviceaccount.com"   # Replace with a service account
-  ]
+  member  = "user:trtjobs.mondal@gmail.com"
 }
 
-resource "google_project_iam_binding" "compute_network_admin" {
+resource "google_project_iam_member" "servicenetworking_admin_sa1" {
+  project = "gcp-trt-training"
+  role    = "roles/servicenetworking.networksAdmin"
+  member  = "serviceAccount:292380354815-compute@developer.gserviceaccount.com"
+}
+
+resource "google_project_iam_member" "servicenetworking_admin_sa2" {
+  project = "gcp-trt-training"
+  role    = "roles/servicenetworking.networksAdmin"
+  member  = "serviceAccount:gcp-trt-training@gcp-trt-training.iam.gserviceaccount.com"
+}
+
+resource "google_project_iam_member" "compute_network_admin_user1" {
   project = "gcp-trt-training" # Replace with your project ID
   role    = "roles/compute.networkAdmin"
+  member  = "user:trtjobs.mondal@gmail.com" # Replace with the user, service account, or group
+}
 
-  members = [
-    "user:trtjobs.mondal@gmail.com",          # Replace with the first user
-    "serviceAccount:292380354815-compute@developer.gserviceaccount.com",          # Replace with the second user
-    "serviceAccount:gcp-trt-training@gcp-trt-training.iam.gserviceaccount.com"   # Replace with a service account
-  ]
+resource "google_project_iam_member" "compute_network_admin_sa1" {
+  project = "gcp-trt-training" # Replace with your project ID
+  role    = "roles/compute.networkAdmin"
+  member  = "serviceAccount:gcp-trt-training@gcp-trt-training.iam.gserviceaccount.com" # Replace with the user, service account, or group
+}
+
+resource "google_project_iam_member" "compute_network_admin_sa2" {
+  project = "gcp-trt-training" # Replace with your project ID
+  role    = "roles/compute.networkAdmin"
+  member  = "serviceAccount:serviceAccount:292380354815-compute@developer.gserviceaccount.com" # Replace with the user, service account, or group
 }
 
 resource "google_compute_network" "private_network" {
