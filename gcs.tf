@@ -24,6 +24,13 @@ resource "google_project_service" "psc_api" {
   depends_on = [google_project_service.cloudresourcemanager_api]
 }
 
+resource "google_project_service" "service_networking_api" {
+  project = "gcp-trt-training" # Replace with your project ID
+  service = "servicenetworking.googleapis.com"
+  depends_on = [google_project_service.cloudresourcemanager_api]
+}
+
+
 resource "google_compute_network" "private_network" {
   name = "trt-private-network"
 }
@@ -33,6 +40,20 @@ resource "google_compute_subnetwork" "private_subnetwork" {
   ip_cidr_range = "10.0.0.0/24"
   region        = "us-east1"
   network       = google_compute_network.private_network.id
+}
+
+resource "google_compute_global_address" "private_ip_range" {
+  name          = "private-ip-range"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = google_compute_network.private_network.id
+}
+
+resource "google_service_networking_connection" "private_vpc_connection" {
+  network                 = google_compute_network.private_network.id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_ip_range.name]
 }
 
 resource "google_alloydb_cluster" "alloy_cluster" {
@@ -58,13 +79,9 @@ resource "google_alloydb_cluster" "alloy_cluster" {
       }
     }
   }
+    depends_on = [google_service_networking_connection.private_vpc_connection]
 }
 
-resource "google_project_service" "service_networking_api" {
-  project = "gcp-trt-training" # Replace with your project ID
-  service = "servicenetworking.googleapis.com"
-  depends_on = [google_project_service.cloudresourcemanager_api]
-}
 
 
 
