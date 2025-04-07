@@ -64,7 +64,7 @@ resource "google_project_iam_member" "compute_network_admin_sa1" {
 resource "google_project_iam_member" "compute_network_admin_sa2" {
   project = "gcp-trt-training" # Replace with your project ID
   role    = "roles/compute.networkAdmin"
-  member  = "serviceAccount:serviceAccount:292380354815-compute@developer.gserviceaccount.com" # Replace with the user, service account, or group
+  member  = "serviceAccount:292380354815-compute@developer.gserviceaccount.com" # Replace with the user, service account, or group
 } 
   
 
