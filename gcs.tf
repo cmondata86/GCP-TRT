@@ -38,7 +38,11 @@ resource "google_compute_subnetwork" "private_subnetwork" {
 resource "google_alloydb_cluster" "alloy_cluster" {
   cluster_id = "trt-alloy-cluster"
   location   = "us-east1"
-  network    = google_compute_network.private_network.id
+ # network    = google_compute_network.private_network.id
+
+  network_config {
+    network = google_compute_network.private_network.id
+  }
 
   continuous_backup_config {
     enabled = true
