@@ -34,3 +34,24 @@ resource "google_compute_subnetwork" "private_subnetwork" {
   region        = "us-east1"
   network       = google_compute_network.private_network.id
 }
+
+resource "google_alloydb_cluster" "alloy_cluster" {
+  cluster_id = "trt-alloy-cluster"
+  location   = "us-east1"
+  network    = google_compute_network.private_network.id
+
+  continuous_backup_config {
+    enabled = true
+  }
+
+  automated_backup_policy {
+    enabled = true
+    weekly_schedule {
+      days_of_week = ["MON", "WED", "FRI"]
+      start_times {
+        hours   = 2
+        minutes = 0
+      }
+    }
+  }
+}
