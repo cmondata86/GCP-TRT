@@ -141,3 +141,35 @@ resource "google_alloydb_user" "alloy_user" {
 }
 
 
+resource "google_compute_instance" "psql_instance" {
+  name         = "psql-instance"
+  machine_type = "e2-medium" # Adjust the machine type as needed
+  zone         = "us-east1-b" # Replace with your desired zone
+
+  boot_disk {
+    initialize_params {
+      image = "projects/debian-cloud/global/images/family/debian-11" # Debian 11 image
+    }
+  }
+
+  network_interface {
+    network    = google_compute_network.private_network.id
+    subnetwork = google_compute_subnetwork.private_subnetwork.id
+    access_config {
+      # Ephemeral public IP
+    }
+  }
+
+  metadata_startup_script = <<-EOT
+    #!/bin/bash
+    apt-get update
+    apt-get install -y postgresql-client
+  EOT
+
+  tags = ["psql-instance"]
+
+  service_account {
+    email  = "gcp-trt-training@gcp-trt-training.iam.gserviceaccount.com" # Replace with a specific service account if needed
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
+}
