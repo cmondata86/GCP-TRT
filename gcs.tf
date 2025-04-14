@@ -186,3 +186,17 @@ resource "google_compute_firewall" "allow_ssh" {
   source_ranges = ["35.235.240.0/20"] # IAP IP range
   target_tags   = ["psql-instance"]   # Ensure the VM has this tag
 }
+
+# Create a VPC network
+resource "google_compute_network" "psc_vpc" {
+  name = "trt-psc-vpc"
+  auto_create_subnetworks = false
+}
+
+# Create a subnetwork in the VPC
+resource "google_compute_subnetwork" "psc_subnet" {
+  name          = "trt-psc-subnet"
+  ip_cidr_range = "10.10.0.0/24" # Adjust the CIDR range as needed
+  region        = "us-east1"
+  network       = google_compute_network.psc_vpc.id
+}
