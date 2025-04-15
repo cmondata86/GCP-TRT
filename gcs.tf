@@ -215,6 +215,7 @@ resource "google_compute_backend_service" "alloydb_backend_service" {
   name                  = "alloydb-backend-service"
   protocol              = "TCP"
   load_balancing_scheme = "EXTERNAL"
+  region                = "us-east1" # Ensure this matches the region of the forwarding rule
 
   backend {
     group = google_compute_instance_group.alloydb_instance_group.self_link
@@ -252,4 +253,5 @@ resource "google_compute_forwarding_rule" "alloydb_forwarding_rule" {
   port_range            = "5432"
   backend_service       = google_compute_backend_service.alloydb_backend_service.self_link
   ip_address            = google_compute_global_address.alloydb_lb_ip.address
+  region                = "us-east1" # Ensure this matches the region of the backend service
 }
