@@ -257,3 +257,15 @@ resource "google_compute_forwarding_rule" "alloydb_forwarding_rule" {
   ip_address            = google_compute_address.alloydb_lb_ip.address
   region                = "us-east1" # Ensure this matches the region of the backend service
 }
+
+# Create a PSC Service Attachment
+resource "google_compute_service_attachment" "psc_service_attachment" {
+  name                  = "alloydb-psc-service-attachment"
+  region                = "us-east1" # Ensure this matches the region of your AlloyDB setup
+  target_service        = google_compute_region_backend_service.alloydb_backend_service.self_link
+  connection_preference = "ACCEPT_AUTOMATIC" # Automatically accept PSC connections
+
+  nat_subnets = [
+    google_compute_subnetwork.psc_subnet.self_link
+  ]
+}
