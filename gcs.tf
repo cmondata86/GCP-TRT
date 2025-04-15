@@ -206,8 +206,9 @@ resource "google_compute_subnetwork" "psc_subnet" {
 }
 
 # Reserve a static IP address for the load balancer
-resource "google_compute_global_address" "alloydb_lb_ip" {
+resource "google_compute_address" "alloydb_lb_ip" {
   name = "alloydb-lb-ip"
+  region = "us-east1"
 }
 
 # Create a backend service for the AlloyDB instances
@@ -253,6 +254,6 @@ resource "google_compute_forwarding_rule" "alloydb_forwarding_rule" {
   ip_protocol           = "TCP"
   port_range            = "5432"
   backend_service       = google_compute_region_backend_service.alloydb_backend_service.self_link
-  ip_address            = google_compute_global_address.alloydb_lb_ip.address
+  ip_address            = google_compute_address.alloydb_lb_ip.address
   region                = "us-east1" # Ensure this matches the region of the backend service
 }
