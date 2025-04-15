@@ -129,6 +129,10 @@ resource "google_alloydb_instance" "alloy_instance" {
   machine_config {
     cpu_count = 2
   }
+  labels = {
+    environment = "Demo-trt" # Replace with your desired key-value pairs
+    purpose     = "database"
+  }
 }
 
 
