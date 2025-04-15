@@ -264,6 +264,7 @@ resource "google_compute_service_attachment" "psc_service_attachment" {
   region                = "us-east1" # Ensure this matches the region of your AlloyDB setup
   target_service        = google_compute_region_backend_service.alloydb_backend_service.self_link
   connection_preference = "ACCEPT_AUTOMATIC" # Automatically accept PSC connections
+  enable_proxy_protocol = false # Set to true if Proxy Protocol is required
 
   nat_subnets = [
     google_compute_subnetwork.psc_subnet.self_link
