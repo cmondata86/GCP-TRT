@@ -219,6 +219,7 @@ resource "google_compute_region_backend_service" "alloydb_backend_service" {
 
   backend {
     group = google_compute_instance_group.alloydb_instance_group.self_link
+    balancing_mode = "CONNECTION" # Set balancing mode to CONNECTION
   }
 
   health_checks = [google_compute_region_health_check.alloydb_health_check.self_link]
