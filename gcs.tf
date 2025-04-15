@@ -130,7 +130,7 @@ resource "google_alloydb_instance" "alloy_instance" {
     cpu_count = 2
   }
   labels = {
-    environment = "Demo-trt" # Replace with your desired key-value pairs
+    environment = "demo-trt" # Replace with your desired key-value pairs
     purpose     = "database"
   }
 }
