@@ -236,7 +236,7 @@ resource "google_compute_health_check" "alloydb_health_check" {
 # Create an instance group for AlloyDB instances
 resource "google_compute_instance_group" "alloydb_instance_group" {
   name        = "alloydb-instance-group"
-  zone        = "us-east1-b" # Replace with your desired zone
+  zone        = "us-east1" # Replace with your desired zone
   instances   = [google_compute_instance.psql_instance.self_link]
   named_port {
     name = "postgres"
