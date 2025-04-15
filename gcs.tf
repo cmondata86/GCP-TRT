@@ -221,11 +221,11 @@ resource "google_compute_region_backend_service" "alloydb_backend_service" {
     group = google_compute_instance_group.alloydb_instance_group.self_link
   }
 
-  health_checks = [google_compute_health_check.alloydb_health_check.self_link]
+  health_checks = [google_compute_region_health_check.alloydb_health_check.self_link]
 }
 
 # Create a health check for the AlloyDB instances
-resource "google_compute_health_check" "alloydb_health_check" {
+resource "google_compute_region_health_check" "alloydb_health_check" {
   name               = "alloydb-health-check"
   check_interval_sec = 10
   timeout_sec        = 5
