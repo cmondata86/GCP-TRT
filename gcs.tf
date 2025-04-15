@@ -211,7 +211,7 @@ resource "google_compute_global_address" "alloydb_lb_ip" {
 }
 
 # Create a backend service for the AlloyDB instances
-resource "google_compute_backend_service" "alloydb_backend_service" {
+resource "google_compute_region_backend_service" "alloydb_backend_service" {
   name                  = "alloydb-backend-service"
   protocol              = "TCP"
   load_balancing_scheme = "EXTERNAL"
@@ -251,7 +251,7 @@ resource "google_compute_forwarding_rule" "alloydb_forwarding_rule" {
   load_balancing_scheme = "EXTERNAL"
   ip_protocol           = "TCP"
   port_range            = "5432"
-  backend_service       = google_compute_backend_service.alloydb_backend_service.self_link
+  backend_service       = google_compute_region_backend_service.alloydb_backend_service.self_link
   ip_address            = google_compute_global_address.alloydb_lb_ip.address
   region                = "us-east1" # Ensure this matches the region of the backend service
 }
