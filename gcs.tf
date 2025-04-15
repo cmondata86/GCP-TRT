@@ -204,3 +204,52 @@ resource "google_compute_subnetwork" "psc_subnet" {
   region        = "us-east1"
   network       = google_compute_network.psc_vpc.id
 }
+
+# Reserve a static IP address for the load balancer
+resource "google_compute_global_address" "alloydb_lb_ip" {
+  name = "alloydb-lb-ip"
+}
+
+# Create a backend service for the AlloyDB instances
+resource "google_compute_backend_service" "alloydb_backend_service" {
+  name                  = "alloydb-backend-service"
+  protocol              = "TCP"
+  load_balancing_scheme = "EXTERNAL"
+
+  backend {
+    group = google_compute_instance_group.alloydb_instance_group.self_link
+  }
+
+  health_checks = [google_compute_health_check.alloydb_health_check.self_link]
+}
+
+# Create a health check for the AlloyDB instances
+resource "google_compute_health_check" "alloydb_health_check" {
+  name               = "alloydb-health-check"
+  check_interval_sec = 10
+  timeout_sec        = 5
+  tcp_health_check {
+    port = 5432 # PostgreSQL default port
+  }
+}
+
+# Create an instance group for AlloyDB instances
+resource "google_compute_instance_group" "alloydb_instance_group" {
+  name        = "alloydb-instance-group"
+  zone        = "us-east1-b" # Replace with your desired zone
+  instances   = [google_compute_instance.psql_instance.self_link]
+  named_port {
+    name = "postgres"
+    port = 5432
+  }
+}
+
+# Create a forwarding rule for the load balancer
+resource "google_compute_forwarding_rule" "alloydb_forwarding_rule" {
+  name                  = "alloydb-forwarding-rule"
+  load_balancing_scheme = "EXTERNAL"
+  ip_protocol           = "TCP"
+  port_range            = "5432"
+  backend_service       = google_compute_backend_service.alloydb_backend_service.self_link
+  ip_address            = google_compute_global_address.alloydb_lb_ip.address
+}
